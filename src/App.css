@@ -1,0 +1,23 @@
+.App {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 30px;
+  background-color: #d6d0d0;
+}
+
+.App > div {
+  margin-right: 50px;
+}
+
+.todolist {
+  padding: 20px 10px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background-color: #ceb36e;
+}
+
+ul {
+  padding-left: 0;
+  list-style: none;
+}
