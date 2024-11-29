@@ -32,7 +32,7 @@ export const Todolist: FC<PropsType> = ({
     const removeTaskHandler = () => removeTask(task.id);
 
     return (
-      <li key={task.id}>
+      <li className={task.isDone ? 'is-done' : ''} key={task.id}>
         <Button name='del' onClick={removeTaskHandler} />
         <input type='checkbox' checked={task.isDone} />
         <span>{task.title}</span>
@@ -42,10 +42,6 @@ export const Todolist: FC<PropsType> = ({
   const setAll = () => setFilter('all');
   const setActive = () => setFilter('active');
   const setCompleted = () => setFilter('completed');
-
-  const setAllOn = filter === 'all' ? 'active-btn' : '';
-  const setActiveOn = filter === 'active' ? 'active-btn' : '';
-  const setCompletedOn = filter === 'completed' ? 'active-btn' : '';
 
   const addTaskHandler = () => {
     if (!inputValue.trim()) {
@@ -82,10 +78,18 @@ export const Todolist: FC<PropsType> = ({
       <br />
 
       <div>
-        <Button className={setAllOn} name='All' onClick={setAll} />
-        <Button className={setActiveOn} name='Active' onClick={setActive} />
         <Button
-          className={setCompletedOn}
+          className={filter === 'all' ? 'active-btn' : ''}
+          name='All'
+          onClick={setAll}
+        />
+        <Button
+          className={filter === 'active' ? 'active-btn' : ''}
+          name='Active'
+          onClick={setActive}
+        />
+        <Button
+          className={filter === 'completed' ? 'active-btn' : ''}
           name='Completed'
           onClick={setCompleted}
         />

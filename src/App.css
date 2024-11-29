@@ -35,3 +35,7 @@ ul {
 .active-btn {
   background-color: lightblue;
 }
+
+.is-done {
+  opacity: .5;
+}
