@@ -11,13 +11,23 @@
 }
 
 .todolist {
-  padding: 20px 10px;
+  padding: 20px 30px;
   border: 1px solid #000;
   border-radius: 4px;
-  background-color: #ceb36e;
+  background-color: #ded6c2;
 }
 
 ul {
   padding-left: 0;
   list-style: none;
+}
+
+.error {
+  font-style: italic;
+  margin-top: 5px;
+  color: tomato;
+}
+
+.error-input {
+  outline: 2px solid tomato;
 }

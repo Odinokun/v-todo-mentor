@@ -1,6 +1,6 @@
-import { ChangeEvent, FC, KeyboardEvent, useState } from "react";
-import { FilterType } from "./App";
-import { Button } from "./components/Button";
+import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
+import { FilterType } from './App';
+import { Button } from './components/Button';
 
 export type TaskType = {
   id: string;
@@ -23,51 +23,62 @@ export const Todolist: FC<PropsType> = ({
   removeTask,
   setFilter,
 }) => {
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
-  const tasksList: JSX.Element[] = tasks.map((task) => {
+  const tasksList: JSX.Element[] = tasks.map(task => {
     const removeTaskHandler = () => removeTask(task.id);
 
     return (
       <li key={task.id}>
-        <Button name="del" onClick={removeTaskHandler} />
-        <input type="checkbox" checked={task.isDone} />
+        <Button name='del' onClick={removeTaskHandler} />
+        <input type='checkbox' checked={task.isDone} />
         <span>{task.title}</span>
       </li>
     );
   });
-  const setAll = () => setFilter("all");
-  const setActive = () => setFilter("active");
-  const setCompleted = () => setFilter("completed");
+  const setAll = () => setFilter('all');
+  const setActive = () => setFilter('active');
+  const setCompleted = () => setFilter('completed');
 
   const addTaskHandler = () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim()) {
+      errorHandler();
+      return;
+    }
     addTask(inputValue.trim());
-    setInputValue("");
+    setInputValue('');
   };
 
-  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
+  const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+    setError('');
+  };
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) =>
-    e.key === "Enter" && addTaskHandler();
+    e.key === 'Enter' && addTaskHandler();
+
+  const errorHandler = () => setError('Field is required!');
 
   return (
-    <div className="todolist">
+    <div className='todolist'>
       <h3>{title}</h3>
       <div>
         <input
           value={inputValue}
           onChange={inputChangeHandler}
           onKeyDown={onKeyPressHandler}
+          style={{ marginRight: '5px' }}
+          className={error ? 'error-input' : ''}
         />
-        <Button name="add task" onClick={addTaskHandler} />
+        <Button name='add task' onClick={addTaskHandler} />
+        {error && <div className='error'>{error}</div>}
       </div>
       <br />
 
       <div>
-        <Button name="All" onClick={setAll} />
-        <Button name="Active" onClick={setActive} />
-        <Button name="Completed" onClick={setCompleted} />
+        <Button name='All' onClick={setAll} />
+        <Button name='Active' onClick={setActive} />
+        <Button name='Completed' onClick={setCompleted} />
       </div>
 
       {tasks.length ? <ul>{tasksList}</ul> : <div>You have no tasks</div>}
