@@ -13,6 +13,7 @@ type PropsType = {
   tasks: TaskType[];
   addTask: (title: string) => void;
   removeTask: (id: string) => void;
+  filter: FilterType;
   setFilter: (filter: FilterType) => void;
 };
 
@@ -21,6 +22,7 @@ export const Todolist: FC<PropsType> = ({
   tasks,
   addTask,
   removeTask,
+  filter,
   setFilter,
 }) => {
   const [inputValue, setInputValue] = useState<string>('');
@@ -40,6 +42,10 @@ export const Todolist: FC<PropsType> = ({
   const setAll = () => setFilter('all');
   const setActive = () => setFilter('active');
   const setCompleted = () => setFilter('completed');
+
+  const setAllOn = filter === 'all' ? 'active-btn' : '';
+  const setActiveOn = filter === 'active' ? 'active-btn' : '';
+  const setCompletedOn = filter === 'completed' ? 'active-btn' : '';
 
   const addTaskHandler = () => {
     if (!inputValue.trim()) {
@@ -76,9 +82,13 @@ export const Todolist: FC<PropsType> = ({
       <br />
 
       <div>
-        <Button name='All' onClick={setAll} />
-        <Button name='Active' onClick={setActive} />
-        <Button name='Completed' onClick={setCompleted} />
+        <Button className={setAllOn} name='All' onClick={setAll} />
+        <Button className={setActiveOn} name='Active' onClick={setActive} />
+        <Button
+          className={setCompletedOn}
+          name='Completed'
+          onClick={setCompleted}
+        />
       </div>
 
       {tasks.length ? <ul>{tasksList}</ul> : <div>You have no tasks</div>}

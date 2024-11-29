@@ -31,3 +31,7 @@ ul {
 .error-input {
   outline: 2px solid tomato;
 }
+
+.active-btn {
+  background-color: lightblue;
+}
