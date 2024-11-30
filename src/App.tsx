@@ -70,20 +70,21 @@ function App() {
     setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, filter: value } : tl)));
   }
 
+  const tasksFilter = (todolist: TodolistType, state: TaskType[]): TaskType[] => {
+    switch (todolist.filter) {
+      case 'active':
+        return state.filter(t => !t.isDone);
+      case 'completed':
+        return state.filter(t => t.isDone);
+      default:
+        return state;
+    }
+  };
+
   return (
     <div className='App'>
       {todolists.map(tl => {
-        const tasksFilter = (state: TaskType[]): TaskType[] => {
-          switch (tl.filter) {
-            case 'active':
-              return state.filter(t => !t.isDone);
-            case 'completed':
-              return state.filter(t => t.isDone);
-            default:
-              return state;
-          }
-        };
-        const filteredTasks = tasksFilter(state);
+        const filteredTasks = tasksFilter(tl, state);
 
         return (
           <div key={tl.id}>
