@@ -4,7 +4,7 @@ import './App.css';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
-type TodolistType = {
+export type TodolistType = {
   id: string;
   title: string;
   filter: FilterType;
@@ -70,28 +70,15 @@ function App() {
     setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, filter: value } : tl)));
   }
 
-  const tasksFilter = (todolist: TodolistType, state: TaskType[]): TaskType[] => {
-    switch (todolist.filter) {
-      case 'active':
-        return state.filter(t => !t.isDone);
-      case 'completed':
-        return state.filter(t => t.isDone);
-      default:
-        return state;
-    }
-  };
-
   return (
     <div className='App'>
       {todolists.map(tl => {
-        const filteredTasks = tasksFilter(tl, state);
-
         return (
           <div key={tl.id}>
             <Todolist
               todolistId={tl.id}
               title={tl.title}
-              tasks={filteredTasks}
+              tasks={state}
               addTask={addTask}
               removeTask={removeTask}
               filter={tl.filter}

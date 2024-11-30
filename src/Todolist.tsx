@@ -22,7 +22,19 @@ export const Todolist: FC<PropsType> = ({ todolistId, title, tasks, addTask, rem
   const [inputValue, setInputValue] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  const tasksList: JSX.Element[] = tasks.map(task => {
+  const tasksFilter = (state: TaskType[]): TaskType[] => {
+    switch (filter) {
+      case 'active':
+        return state.filter(t => !t.isDone);
+      case 'completed':
+        return state.filter(t => t.isDone);
+      default:
+        return state;
+    }
+  };
+  const filteredTasks = tasksFilter(tasks);
+
+  const tasksList: JSX.Element[] = filteredTasks.map(task => {
     const removeTaskHandler = () => removeTask(task.id);
 
     return (
