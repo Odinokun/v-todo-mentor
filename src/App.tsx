@@ -25,7 +25,7 @@ function App() {
     { id: todolist_3, title: 'Watching', filter: 'completed' },
   ]);
 
-  const allTasks: AllTasksType = {
+  const [allTasks, setAllTasks] = useState<AllTasksType>({
     [todolist_1]: [
       { id: crypto.randomUUID(), title: 'HTML&CSS', isDone: true },
       { id: crypto.randomUUID(), title: 'JS', isDone: true },
@@ -44,7 +44,7 @@ function App() {
       { id: crypto.randomUUID(), title: 'Mr. Robot', isDone: true },
       { id: crypto.randomUUID(), title: 'The Dark Knight', isDone: true },
     ],
-  };
+  });
 
   const [state, setState] = useState<TaskType[]>([
     { id: crypto.randomUUID(), title: 'HTML&CSS', isDone: true },
@@ -73,18 +73,7 @@ function App() {
   return (
     <div className='App'>
       {todolists.map(tl => {
-        return (
-          <Todolist
-            key={tl.id}
-            todolistId={tl.id}
-            title={tl.title}
-            tasks={state}
-            addTask={addTask}
-            removeTask={removeTask}
-            filter={tl.filter}
-            changeFilter={changeFilter}
-          />
-        );
+        return <Todolist key={tl.id} todolistId={tl.id} title={tl.title} tasks={state} addTask={addTask} removeTask={removeTask} filter={tl.filter} changeFilter={changeFilter} />;
       })}
     </div>
   );
