@@ -45,6 +45,7 @@ export const Todolist: FC<PropsType> = ({ todolistId, title, tasks, addTask, rem
       </li>
     );
   });
+
   const setAll = () => changeFilter(todolistId, 'all');
   const setActive = () => changeFilter(todolistId, 'active');
   const setCompleted = () => changeFilter(todolistId, 'completed');
