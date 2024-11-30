@@ -74,17 +74,16 @@ function App() {
     <div className='App'>
       {todolists.map(tl => {
         return (
-          <div key={tl.id}>
-            <Todolist
-              todolistId={tl.id}
-              title={tl.title}
-              tasks={state}
-              addTask={addTask}
-              removeTask={removeTask}
-              filter={tl.filter}
-              changeFilter={changeFilter}
-            />
-          </div>
+          <Todolist
+            key={tl.id}
+            todolistId={tl.id}
+            title={tl.title}
+            tasks={state}
+            addTask={addTask}
+            removeTask={removeTask}
+            filter={tl.filter}
+            changeFilter={changeFilter}
+          />
         );
       })}
     </div>
