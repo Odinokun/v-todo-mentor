@@ -12,8 +12,8 @@ type PropsType = {
   todolistId: string;
   title: string;
   tasks: TaskType[];
-  addTask: (title: string) => void;
-  removeTask: (id: string) => void;
+  addTask: (todolistId: string, title: string) => void;
+  removeTask: (todolistId: string, id: string) => void;
   filter: FilterType;
   changeFilter: (todolistId: string, filter: FilterType) => void;
 };
@@ -35,7 +35,7 @@ export const Todolist: FC<PropsType> = ({ todolistId, title, tasks, addTask, rem
   const filteredTasks = tasksFilter(tasks);
 
   const tasksList: JSX.Element[] = filteredTasks.map(task => {
-    const removeTaskHandler = () => removeTask(task.id);
+    const removeTaskHandler = () => removeTask(todolistId, task.id);
 
     return (
       <li className={task.isDone ? 'is-done' : ''} key={task.id}>
@@ -55,7 +55,7 @@ export const Todolist: FC<PropsType> = ({ todolistId, title, tasks, addTask, rem
       errorHandler();
       return;
     }
-    addTask(inputValue.trim());
+    addTask(todolistId, inputValue.trim());
     setInputValue('');
   };
 

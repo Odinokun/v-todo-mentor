@@ -24,7 +24,6 @@ function App() {
     { id: todolist_2, title: 'Reading', filter: 'active' },
     { id: todolist_3, title: 'Watching', filter: 'completed' },
   ]);
-
   const [allTasks, setAllTasks] = useState<AllTasksType>({
     [todolist_1]: [
       { id: crypto.randomUUID(), title: 'HTML&CSS', isDone: true },
@@ -37,7 +36,7 @@ function App() {
     [todolist_2]: [
       { id: crypto.randomUUID(), title: 'Harry Potter', isDone: false },
       { id: crypto.randomUUID(), title: 'Sherlock Holmes', isDone: false },
-      { id: crypto.randomUUID(), title: 'Poirot', isDone: false },
+      { id: crypto.randomUUID(), title: 'The Lord of the Rings', isDone: true },
     ],
     [todolist_3]: [
       { id: crypto.randomUUID(), title: 'The Godfather', isDone: true },
@@ -46,25 +45,18 @@ function App() {
     ],
   });
 
-  const [state, setState] = useState<TaskType[]>([
-    { id: crypto.randomUUID(), title: 'HTML&CSS', isDone: true },
-    { id: crypto.randomUUID(), title: 'JS', isDone: true },
-    { id: crypto.randomUUID(), title: 'React', isDone: false },
-    { id: crypto.randomUUID(), title: 'GraphQL', isDone: false },
-    { id: crypto.randomUUID(), title: 'Rest API', isDone: false },
-    { id: crypto.randomUUID(), title: 'Graph API', isDone: false },
-  ]);
-
-  const addTask = (title: string) => {
+  const addTask = (todolistId: string, title: string) => {
     const newTask: TaskType = {
       id: crypto.randomUUID(),
       title,
       isDone: false,
     };
-    setState([newTask, ...state]);
+    setAllTasks({ ...allTasks, [todolistId]: [newTask, ...allTasks[todolistId]] });
+    // setState([newTask, ...state]);
   };
 
-  const removeTask = (id: string) => setState(state.filter(t => t.id !== id));
+  const removeTask = (todolistId: string, id: string) =>
+    setAllTasks({ ...allTasks, [todolistId]: allTasks[todolistId].filter(t => t.id !== id) });
 
   function changeFilter(todolistId: string, value: FilterType) {
     setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, filter: value } : tl)));
@@ -73,7 +65,18 @@ function App() {
   return (
     <div className='App'>
       {todolists.map(tl => {
-        return <Todolist key={tl.id} todolistId={tl.id} title={tl.title} tasks={state} addTask={addTask} removeTask={removeTask} filter={tl.filter} changeFilter={changeFilter} />;
+        return (
+          <Todolist
+            key={tl.id}
+            todolistId={tl.id}
+            title={tl.title}
+            tasks={allTasks[tl.id]}
+            addTask={addTask}
+            removeTask={removeTask}
+            filter={tl.filter}
+            changeFilter={changeFilter}
+          />
+        );
       })}
     </div>
   );
