@@ -16,9 +16,19 @@ type PropsType = {
   removeTask: (todolistId: string, id: string) => void;
   filter: FilterType;
   changeFilter: (todolistId: string, filter: FilterType) => void;
+  onChangeStatus: (todolistId: string, id: string, taskStatus: boolean) => void;
 };
 
-export const Todolist: FC<PropsType> = ({ todolistId, title, tasks, addTask, removeTask, filter, changeFilter }) => {
+export const Todolist: FC<PropsType> = ({
+  todolistId,
+  title,
+  tasks,
+  addTask,
+  removeTask,
+  filter,
+  changeFilter,
+  onChangeStatus,
+}) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [error, setError] = useState<string>('');
 
@@ -37,11 +47,17 @@ export const Todolist: FC<PropsType> = ({ todolistId, title, tasks, addTask, rem
   const tasksList: JSX.Element[] = filteredTasks.map(task => {
     const removeTaskHandler = () => removeTask(todolistId, task.id);
 
+    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      onChangeStatus(todolistId, task.id, e.currentTarget.checked);
+    };
+
     return (
       <li className={task.isDone ? 'is-done' : ''} key={task.id}>
         <Button name='del' onClick={removeTaskHandler} />
-        <input type='checkbox' checked={task.isDone} />
-        <span>{task.title}</span>
+        <label>
+          <input type='checkbox' checked={task.isDone} onChange={onChangeStatusHandler} />
+          <span>{task.title}</span>
+        </label>
       </li>
     );
   });
