@@ -17,6 +17,7 @@ type PropsType = {
   filter: FilterType;
   changeFilter: (todolistId: string, filter: FilterType) => void;
   onChangeStatus: (todolistId: string, id: string, taskStatus: boolean) => void;
+  removeTodolist: (todolistId: string) => void;
 };
 
 export const Todolist: FC<PropsType> = ({
@@ -28,6 +29,7 @@ export const Todolist: FC<PropsType> = ({
   filter,
   changeFilter,
   onChangeStatus,
+  removeTodolist,
 }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -83,9 +85,14 @@ export const Todolist: FC<PropsType> = ({
 
   const errorHandler = () => setError('Field is required!');
 
+  const removeTodolistHandler = () => removeTodolist(todolistId);
+
   return (
     <div className='todolist'>
-      <h3>{title}</h3>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <h3 style={{ marginRight: '10px' }}>{title}</h3>
+        <Button name='del' onClick={removeTodolistHandler} />
+      </div>
       <div>
         <input
           value={inputValue}
