@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { TaskType, Todolist } from './Todolist';
 import './App.css';
+import { AddItemForm } from './components/AddItemForm';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -56,25 +57,52 @@ function App() {
       title,
       isDone: false,
     };
-    setAllTasks({ ...allTasks, [todolistId]: [newTask, ...allTasks[todolistId]] });
-    // setState([newTask, ...state]);
+    setAllTasks({
+      ...allTasks,
+      [todolistId]: [newTask, ...allTasks[todolistId]],
+    });
   };
 
   const removeTask = (todolistId: string, id: string) =>
-    setAllTasks({ ...allTasks, [todolistId]: allTasks[todolistId].filter(t => t.id !== id) });
-
-  const onChangeStatus = (todolistId: string, id: string, taskStatus: boolean) =>
     setAllTasks({
       ...allTasks,
-      [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, isDone: taskStatus } : t)),
+      [todolistId]: allTasks[todolistId].filter(t => t.id !== id),
     });
 
-  function changeFilter(todolistId: string, value: FilterType) {
-    setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, filter: value } : tl)));
-  }
+  const onChangeStatus = (
+    todolistId: string,
+    id: string,
+    taskStatus: boolean
+  ) =>
+    setAllTasks({
+      ...allTasks,
+      [todolistId]: allTasks[todolistId].map(t =>
+        t.id === id ? { ...t, isDone: taskStatus } : t
+      ),
+    });
+
+  const changeFilter = (todolistId: string, value: FilterType) => {
+    setTodolists(
+      todolists.map(tl =>
+        tl.id === todolistId ? { ...tl, filter: value } : tl
+      )
+    );
+  };
+
+  const addTodolist = (title: string) => {
+    const newTodo: TodolistType = {
+      id: crypto.randomUUID(),
+      title,
+      filter: 'all',
+    };
+    setTodolists([newTodo, ...todolists]);
+    setAllTasks({ [newTodo.id]: [], ...allTasks });
+  };
 
   return (
-    <div className='App'>
+    <div className='App' style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <AddItemForm callback={addTodolist} />
+
       {todolists.map(tl => {
         return (
           <Todolist
