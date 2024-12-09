@@ -101,7 +101,10 @@ function App() {
 
   return (
     <div className='App' style={{ display: 'flex', flexWrap: 'wrap' }}>
-      <AddItemForm callback={addTodolist} />
+      <div style={{ width: '100%', marginBottom: '20px' }}>
+        <h3>Add new todolist</h3>
+        <AddItemForm callback={addTodolist} />
+      </div>
 
       {todolists.map(tl => {
         return (
