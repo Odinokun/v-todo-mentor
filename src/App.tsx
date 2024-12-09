@@ -69,17 +69,27 @@ function App() {
       [todolistId]: allTasks[todolistId].filter(t => t.id !== id),
     });
 
+  const onEditTaskName = (todolistId: string, id: string, title: string) => {
+    setAllTasks({
+      ...allTasks,
+      [todolistId]: allTasks[todolistId].map(t =>
+        t.id === id ? { ...t, title } : t
+      ),
+    });
+  };
+
   const onChangeStatus = (
     todolistId: string,
     id: string,
     taskStatus: boolean
-  ) =>
+  ) => {
     setAllTasks({
       ...allTasks,
       [todolistId]: allTasks[todolistId].map(t =>
         t.id === id ? { ...t, isDone: taskStatus } : t
       ),
     });
+  };
 
   const changeFilter = (todolistId: string, value: FilterType) => {
     setTodolists(
@@ -100,8 +110,14 @@ function App() {
     setAllTasks({ [newId]: [], ...allTasks });
   };
 
+  const onEditTodolistTitle = (todolistId: string, title: string) => {
+    setTodolists(
+      todolists.map(tl => (tl.id === todolistId ? { ...tl, title } : tl))
+    );
+  };
+
   return (
-    <div className='App' style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       <div style={{ width: '100%', marginBottom: '20px' }}>
         <h3>Add new todolist</h3>
         <AddItemForm onClick={addTodolist} />
@@ -116,10 +132,12 @@ function App() {
             tasks={allTasks[tl.id]}
             addTask={addTask}
             removeTask={removeTask}
+            onEditTaskName={onEditTaskName}
             filter={tl.filter}
             changeFilter={changeFilter}
             onChangeStatus={onChangeStatus}
             removeTodolist={removeTodolist}
+            onEditTodolistTitle={onEditTodolistTitle}
           />
         );
       })}
