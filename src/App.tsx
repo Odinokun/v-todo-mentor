@@ -90,13 +90,14 @@ function App() {
   };
 
   const addTodolist = (title: string) => {
+    const newId = crypto.randomUUID();
     const newTodo: TodolistType = {
-      id: crypto.randomUUID(),
+      id: newId,
       title,
       filter: 'all',
     };
     setTodolists([newTodo, ...todolists]);
-    setAllTasks({ [newTodo.id]: [], ...allTasks });
+    setAllTasks({ [newId]: [], ...allTasks });
   };
 
   return (

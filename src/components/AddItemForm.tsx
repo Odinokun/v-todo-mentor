@@ -13,9 +13,9 @@ export const AddItemForm: FC<PropsType> = ({ onClick }) => {
     setError('');
   };
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) =>
-    e.key === 'Enter' && addTaskHandler();
+    e.key === 'Enter' && onClickHandler();
 
-  const addTaskHandler = () => {
+  const onClickHandler = () => {
     if (!inputValue.trim()) {
       setError('Field is required!');
       return;
@@ -32,7 +32,7 @@ export const AddItemForm: FC<PropsType> = ({ onClick }) => {
         onKeyDown={onKeyPressHandler}
         className={error ? 'error-input' : ''}
       />
-      <Button name='add task' onClick={addTaskHandler} />
+      <Button name='add task' onClick={onClickHandler} />
       {error && <div className='error'>{error}</div>}
     </div>
   );
