@@ -2,10 +2,10 @@ import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import { Button } from './Button';
 
 type PropsType = {
-  callback: (title: string) => void;
+  onClick: (title: string) => void;
 };
 
-export const AddItemForm: FC<PropsType> = ({ callback }) => {
+export const AddItemForm: FC<PropsType> = ({ onClick }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [error, setError] = useState<string>('');
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,7 @@ export const AddItemForm: FC<PropsType> = ({ callback }) => {
       setError('Field is required!');
       return;
     }
-    callback(inputValue.trim());
+    onClick(inputValue.trim());
     setInputValue('');
   };
 

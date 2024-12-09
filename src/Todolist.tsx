@@ -81,7 +81,7 @@ export const Todolist: FC<PropsType> = ({
         <Button name='del' onClick={removeTodolistHandler} />
       </div>
 
-      <AddItemForm callback={addTaskCallback} />
+      <AddItemForm onClick={addTaskCallback} />
       <br />
 
       <div>
