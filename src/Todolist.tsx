@@ -49,6 +49,17 @@ export const Todolist: FC<PropsType> = ({
   };
   const filteredTasks = tasksFilter(tasks);
 
+  const setAll = () => changeFilter(todolistId, 'all');
+  const setActive = () => changeFilter(todolistId, 'active');
+  const setCompleted = () => changeFilter(todolistId, 'completed');
+
+  const removeTodolistHandler = () => removeTodolist(todolistId);
+
+  const addTaskCallback = (title: string) => addTask(todolistId, title);
+
+  const onEditTodolistTitleHandler = (title: string) =>
+    onEditTodolistTitle(todolistId, title);
+
   const tasksList: JSX.Element[] = filteredTasks.map(task => {
     const removeTaskHandler = () => removeTask(todolistId, task.id);
 
@@ -56,9 +67,8 @@ export const Todolist: FC<PropsType> = ({
       onChangeStatus(todolistId, task.id, e.currentTarget.checked);
     };
 
-    const onEditTaskNameHandler = (title: string) => {
+    const onEditTaskNameHandler = (title: string) =>
       onEditTaskName(todolistId, task.id, title);
-    };
 
     return (
       <li className={task.isDone ? 'is-done' : ''} key={task.id}>
@@ -72,17 +82,6 @@ export const Todolist: FC<PropsType> = ({
       </li>
     );
   });
-
-  const setAll = () => changeFilter(todolistId, 'all');
-  const setActive = () => changeFilter(todolistId, 'active');
-  const setCompleted = () => changeFilter(todolistId, 'completed');
-
-  const removeTodolistHandler = () => removeTodolist(todolistId);
-
-  const addTaskCallback = (title: string) => addTask(todolistId, title);
-
-  const onEditTodolistTitleHandler = (title: string) =>
-    onEditTodolistTitle(todolistId, title);
 
   return (
     <div className='todolist'>

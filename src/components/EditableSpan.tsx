@@ -12,7 +12,7 @@ export const EditableSpan: FC<PropsType> = ({ title, callback }) => {
   const onDoubleClickHandler = () => setEditMode(true);
   const onBlurHandler = () => {
     if (value.trim().length) {
-      callbackHandler();
+      callback(value);
       setEditMode(false);
     } else {
       alert('Field must be required!');
@@ -21,10 +21,6 @@ export const EditableSpan: FC<PropsType> = ({ title, callback }) => {
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     setValue(e.currentTarget.value);
-
-  const callbackHandler = () => {
-    callback(value);
-  };
 
   return editMode ? (
     <input
