@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { TaskType, Todolist } from './Todolist';
 import './App.css';
+import { AddItemForm } from './components/AddItemForm';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -56,25 +57,72 @@ function App() {
       title,
       isDone: false,
     };
-    setAllTasks({ ...allTasks, [todolistId]: [newTask, ...allTasks[todolistId]] });
-    // setState([newTask, ...state]);
+    setAllTasks({
+      ...allTasks,
+      [todolistId]: [newTask, ...allTasks[todolistId]],
+    });
   };
 
   const removeTask = (todolistId: string, id: string) =>
-    setAllTasks({ ...allTasks, [todolistId]: allTasks[todolistId].filter(t => t.id !== id) });
-
-  const onChangeStatus = (todolistId: string, id: string, taskStatus: boolean) =>
     setAllTasks({
       ...allTasks,
-      [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, isDone: taskStatus } : t)),
+      [todolistId]: allTasks[todolistId].filter(t => t.id !== id),
     });
 
-  function changeFilter(todolistId: string, value: FilterType) {
-    setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, filter: value } : tl)));
-  }
+  const onEditTaskName = (todolistId: string, id: string, title: string) => {
+    setAllTasks({
+      ...allTasks,
+      [todolistId]: allTasks[todolistId].map(t =>
+        t.id === id ? { ...t, title } : t
+      ),
+    });
+  };
+
+  const onChangeStatus = (
+    todolistId: string,
+    id: string,
+    taskStatus: boolean
+  ) => {
+    setAllTasks({
+      ...allTasks,
+      [todolistId]: allTasks[todolistId].map(t =>
+        t.id === id ? { ...t, isDone: taskStatus } : t
+      ),
+    });
+  };
+
+  const changeFilter = (todolistId: string, value: FilterType) => {
+    setTodolists(
+      todolists.map(tl =>
+        tl.id === todolistId ? { ...tl, filter: value } : tl
+      )
+    );
+  };
+
+  const addTodolist = (title: string) => {
+    const newId = crypto.randomUUID();
+    const newTodo: TodolistType = {
+      id: newId,
+      title,
+      filter: 'all',
+    };
+    setTodolists([newTodo, ...todolists]);
+    setAllTasks({ [newId]: [], ...allTasks });
+  };
+
+  const onEditTodolistTitle = (todolistId: string, title: string) => {
+    setTodolists(
+      todolists.map(tl => (tl.id === todolistId ? { ...tl, title } : tl))
+    );
+  };
 
   return (
-    <div className='App'>
+    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div style={{ width: '100%', marginBottom: '20px' }}>
+        <h3>Add new todolist</h3>
+        <AddItemForm onClick={addTodolist} />
+      </div>
+
       {todolists.map(tl => {
         return (
           <Todolist
@@ -84,10 +132,12 @@ function App() {
             tasks={allTasks[tl.id]}
             addTask={addTask}
             removeTask={removeTask}
+            onEditTaskName={onEditTaskName}
             filter={tl.filter}
             changeFilter={changeFilter}
             onChangeStatus={onChangeStatus}
             removeTodolist={removeTodolist}
+            onEditTodolistTitle={onEditTodolistTitle}
           />
         );
       })}
