@@ -2,7 +2,8 @@ import { ChangeEvent, FC } from 'react';
 import { FilterType } from './App';
 import { AddItemForm } from './components/AddItemForm';
 import { EditableSpan } from './components/EditableSpan';
-import { Button } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
+import Delete from '@mui/icons-material/Delete';
 
 export type TaskType = {
   id: string;
@@ -68,36 +69,44 @@ export const Todolist: FC<PropsType> = ({
     const onEditTaskNameHandler = (title: string) => onEditTaskName(todolistId, task.id, title);
 
     return (
-      <li className={task.isDone ? 'is-done' : ''} key={task.id}>
-        <Button onClick={removeTaskHandler}>del</Button>
+      // <Box className={task.isDone ? 'is-done' : ''} key={task.id}>
+      <Box key={task.id}>
+        <IconButton onClick={removeTaskHandler} color='error' size='small'>
+          <Delete />
+        </IconButton>
         <input type='checkbox' checked={task.isDone} onChange={onChangeStatusHandler} />
         <EditableSpan title={task.title} callback={onEditTaskNameHandler} />
-      </li>
+      </Box>
     );
   });
 
   return (
     <div className='todolist'>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <h3 style={{ marginRight: '10px' }}>
+      <Box display='flex' justifyContent='space-between' alignItems='center'>
+        <Typography variant='h5' component='h2'>
           <EditableSpan title={title} callback={onEditTodolistTitleHandler} />
-        </h3>
-        <Button onClick={removeTodolistHandler}>del</Button>
-      </div>
+        </Typography>
+        <IconButton onClick={removeTodolistHandler} color='error'>
+          <Delete />
+        </IconButton>
+      </Box>
 
       <AddItemForm onClick={addTaskCallback} />
       <br />
 
       <div>
-        <Button onClick={setAll}>All</Button>
-        <Button onClick={setActive}>Active</Button>
-        <Button onClick={setCompleted}>Completed</Button>
-        {/* <Btn className={filter === 'all' ? 'active-btn' : ''} name='All' onClick={setAll} />
-        <Btn className={filter === 'active' ? 'active-btn' : ''} name='Active' onClick={setActive} />
-        <Btn className={filter === 'completed' ? 'active-btn' : ''} name='Completed' onClick={setCompleted} /> */}
+        <Button variant={filter === 'all' ? 'contained' : 'outlined'} color='primary' onClick={setAll}>
+          All
+        </Button>
+        <Button variant={filter === 'active' ? 'contained' : 'outlined'} color='secondary' onClick={setActive}>
+          Active
+        </Button>
+        <Button variant={filter === 'completed' ? 'contained' : 'outlined'} color='success' onClick={setCompleted}>
+          Completed
+        </Button>
       </div>
 
-      {tasks.length ? <ul>{tasksList}</ul> : <div>You have no tasks</div>}
+      {tasks.length ? <Box>{tasksList}</Box> : <Box>You have no tasks</Box>}
     </div>
   );
 };
