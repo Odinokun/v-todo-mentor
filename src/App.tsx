@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TaskType, Todolist } from './Todolist';
-import './App.css';
 import { AddItemForm } from './components/AddItemForm';
+import './App.css';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -72,31 +72,19 @@ function App() {
   const onEditTaskName = (todolistId: string, id: string, title: string) => {
     setAllTasks({
       ...allTasks,
-      [todolistId]: allTasks[todolistId].map(t =>
-        t.id === id ? { ...t, title } : t
-      ),
+      [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, title } : t)),
     });
   };
 
-  const onChangeStatus = (
-    todolistId: string,
-    id: string,
-    taskStatus: boolean
-  ) => {
+  const onChangeStatus = (todolistId: string, id: string, taskStatus: boolean) => {
     setAllTasks({
       ...allTasks,
-      [todolistId]: allTasks[todolistId].map(t =>
-        t.id === id ? { ...t, isDone: taskStatus } : t
-      ),
+      [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, isDone: taskStatus } : t)),
     });
   };
 
   const changeFilter = (todolistId: string, value: FilterType) => {
-    setTodolists(
-      todolists.map(tl =>
-        tl.id === todolistId ? { ...tl, filter: value } : tl
-      )
-    );
+    setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, filter: value } : tl)));
   };
 
   const addTodolist = (title: string) => {
@@ -111,14 +99,12 @@ function App() {
   };
 
   const onEditTodolistTitle = (todolistId: string, title: string) => {
-    setTodolists(
-      todolists.map(tl => (tl.id === todolistId ? { ...tl, title } : tl))
-    );
+    setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, title } : tl)));
   };
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      <div style={{ width: '100%', marginBottom: '20px' }}>
+    <div>
+      <div>
         <h3>Add new todolist</h3>
         <AddItemForm onClick={addTodolist} />
       </div>

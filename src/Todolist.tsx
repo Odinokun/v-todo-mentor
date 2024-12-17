@@ -57,27 +57,20 @@ export const Todolist: FC<PropsType> = ({
 
   const addTaskCallback = (title: string) => addTask(todolistId, title);
 
-  const onEditTodolistTitleHandler = (title: string) =>
-    onEditTodolistTitle(todolistId, title);
+  const onEditTodolistTitleHandler = (title: string) => onEditTodolistTitle(todolistId, title);
 
   const tasksList: JSX.Element[] = filteredTasks.map(task => {
     const removeTaskHandler = () => removeTask(todolistId, task.id);
 
-    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) =>
       onChangeStatus(todolistId, task.id, e.currentTarget.checked);
-    };
 
-    const onEditTaskNameHandler = (title: string) =>
-      onEditTaskName(todolistId, task.id, title);
+    const onEditTaskNameHandler = (title: string) => onEditTaskName(todolistId, task.id, title);
 
     return (
       <li className={task.isDone ? 'is-done' : ''} key={task.id}>
         <Button name='del' onClick={removeTaskHandler} />
-        <input
-          type='checkbox'
-          checked={task.isDone}
-          onChange={onChangeStatusHandler}
-        />
+        <input type='checkbox' checked={task.isDone} onChange={onChangeStatusHandler} />
         <EditableSpan title={task.title} callback={onEditTaskNameHandler} />
       </li>
     );
@@ -96,21 +89,9 @@ export const Todolist: FC<PropsType> = ({
       <br />
 
       <div>
-        <Button
-          className={filter === 'all' ? 'active-btn' : ''}
-          name='All'
-          onClick={setAll}
-        />
-        <Button
-          className={filter === 'active' ? 'active-btn' : ''}
-          name='Active'
-          onClick={setActive}
-        />
-        <Button
-          className={filter === 'completed' ? 'active-btn' : ''}
-          name='Completed'
-          onClick={setCompleted}
-        />
+        <Button className={filter === 'all' ? 'active-btn' : ''} name='All' onClick={setAll} />
+        <Button className={filter === 'active' ? 'active-btn' : ''} name='Active' onClick={setActive} />
+        <Button className={filter === 'completed' ? 'active-btn' : ''} name='Completed' onClick={setCompleted} />
       </div>
 
       {tasks.length ? <ul>{tasksList}</ul> : <div>You have no tasks</div>}
