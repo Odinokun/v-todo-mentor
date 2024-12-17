@@ -7,16 +7,16 @@ type PropsType = {
 
 export const AddItemForm: FC<PropsType> = ({ onClick }) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<boolean>(false);
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
-    setError('');
+    setError(false);
   };
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && onClickHandler();
 
   const onClickHandler = () => {
     if (!inputValue.trim()) {
-      setError('Field is required!');
+      setError(true);
       return;
     }
     onClick(inputValue.trim());
@@ -34,18 +34,17 @@ export const AddItemForm: FC<PropsType> = ({ onClick }) => {
   return (
     <Box>
       <TextField
-        label='Outlined'
+        label={error ? 'Incorrect entry.' : 'Type new title'}
         variant='outlined'
         size='small'
         value={inputValue}
         onChange={inputChangeHandler}
         onKeyDown={onKeyPressHandler}
-        className={error ? 'error-input' : ''}
+        error={!!error}
       />
       <Button variant='contained' onClick={onClickHandler} style={btnStyles}>
         +
       </Button>
-      {error && <div className='error'>{error}</div>}
     </Box>
   );
 };
