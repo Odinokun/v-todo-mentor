@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button';
+import { Box, Button, TextField } from '@mui/material';
 import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 
 type PropsType = {
@@ -23,16 +23,29 @@ export const AddItemForm: FC<PropsType> = ({ onClick }) => {
     setInputValue('');
   };
 
+  const btnStyles = {
+    maxWidth: '38px',
+    maxHeight: '38px',
+    minWidth: '38px',
+    minHeight: '38px',
+    marginLeft: '5px',
+  };
+
   return (
-    <div>
-      <input
+    <Box>
+      <TextField
+        label='Outlined'
+        variant='outlined'
+        size='small'
         value={inputValue}
         onChange={inputChangeHandler}
         onKeyDown={onKeyPressHandler}
         className={error ? 'error-input' : ''}
       />
-      <Button onClick={onClickHandler} name='add task' />
+      <Button variant='contained' onClick={onClickHandler} style={btnStyles}>
+        +
+      </Button>
       {error && <div className='error'>{error}</div>}
-    </div>
+    </Box>
   );
 };

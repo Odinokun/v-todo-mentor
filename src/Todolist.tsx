@@ -2,8 +2,8 @@ import { ChangeEvent, FC } from 'react';
 import { FilterType } from './App';
 import { AddItemForm } from './components/AddItemForm';
 import { EditableSpan } from './components/EditableSpan';
-import { Box, Button, IconButton, Typography } from '@mui/material';
 import Delete from '@mui/icons-material/Delete';
+import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material';
 
 export type TaskType = {
   id: string;
@@ -70,12 +70,14 @@ export const Todolist: FC<PropsType> = ({
 
     return (
       // <Box className={task.isDone ? 'is-done' : ''} key={task.id}>
-      <Box key={task.id}>
+      <Box key={task.id} display='flex' alignItems='center'>
         <IconButton onClick={removeTaskHandler} color='error' size='small'>
           <Delete />
         </IconButton>
-        <input type='checkbox' checked={task.isDone} onChange={onChangeStatusHandler} />
-        <EditableSpan title={task.title} callback={onEditTaskNameHandler} />
+        <Checkbox checked={task.isDone} onChange={onChangeStatusHandler} />
+        <Typography variant='body1' component='span'>
+          <EditableSpan title={task.title} callback={onEditTaskNameHandler} />
+        </Typography>
       </Box>
     );
   });
@@ -86,7 +88,7 @@ export const Todolist: FC<PropsType> = ({
         <Typography variant='h5' component='h2'>
           <EditableSpan title={title} callback={onEditTodolistTitleHandler} />
         </Typography>
-        <IconButton onClick={removeTodolistHandler} color='error'>
+        <IconButton onClick={removeTodolistHandler} color='error' size='small'>
           <Delete />
         </IconButton>
       </Box>
@@ -95,13 +97,31 @@ export const Todolist: FC<PropsType> = ({
       <br />
 
       <div>
-        <Button variant={filter === 'all' ? 'contained' : 'outlined'} color='primary' onClick={setAll}>
+        <Button
+          variant={filter === 'all' ? 'contained' : 'outlined'}
+          color='primary'
+          onClick={setAll}
+          size='small'
+          style={{ marginRight: '5px' }}
+        >
           All
         </Button>
-        <Button variant={filter === 'active' ? 'contained' : 'outlined'} color='secondary' onClick={setActive}>
+        <Button
+          variant={filter === 'active' ? 'contained' : 'outlined'}
+          color='secondary'
+          onClick={setActive}
+          size='small'
+          style={{ marginRight: '5px' }}
+        >
           Active
         </Button>
-        <Button variant={filter === 'completed' ? 'contained' : 'outlined'} color='success' onClick={setCompleted}>
+        <Button
+          variant={filter === 'completed' ? 'contained' : 'outlined'}
+          color='success'
+          onClick={setCompleted}
+          size='small'
+          style={{ marginRight: '5px' }}
+        >
           Completed
         </Button>
       </div>
