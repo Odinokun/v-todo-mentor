@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import { ChangeEvent, FC, useState } from 'react';
 
 type PropsType = {
@@ -19,17 +20,13 @@ export const EditableSpan: FC<PropsType> = ({ title, callback }) => {
     }
   };
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
-    setValue(e.currentTarget.value);
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
 
   return editMode ? (
-    <input
-      value={value}
-      onChange={onChangeHandler}
-      onBlur={onBlurHandler}
-      autoFocus
-    />
+    <input value={value} onChange={onChangeHandler} onBlur={onBlurHandler} autoFocus />
   ) : (
-    <span onDoubleClick={onDoubleClickHandler}>{title}</span>
+    <Typography variant='inherit' component='span' onDoubleClick={onDoubleClickHandler}>
+      {title}
+    </Typography>
   );
 };

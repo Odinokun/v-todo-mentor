@@ -1,8 +1,9 @@
 import { ChangeEvent, FC } from 'react';
 import { FilterType } from './App';
-import { Button } from './components/Button';
 import { AddItemForm } from './components/AddItemForm';
 import { EditableSpan } from './components/EditableSpan';
+import Delete from '@mui/icons-material/Delete';
+import { Box, Button, Checkbox, IconButton, Paper, Typography } from '@mui/material';
 
 export type TaskType = {
   id: string;
@@ -57,63 +58,83 @@ export const Todolist: FC<PropsType> = ({
 
   const addTaskCallback = (title: string) => addTask(todolistId, title);
 
-  const onEditTodolistTitleHandler = (title: string) =>
-    onEditTodolistTitle(todolistId, title);
+  const onEditTodolistTitleHandler = (title: string) => onEditTodolistTitle(todolistId, title);
 
   const tasksList: JSX.Element[] = filteredTasks.map(task => {
     const removeTaskHandler = () => removeTask(todolistId, task.id);
 
-    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) =>
       onChangeStatus(todolistId, task.id, e.currentTarget.checked);
-    };
 
-    const onEditTaskNameHandler = (title: string) =>
-      onEditTaskName(todolistId, task.id, title);
+    const onEditTaskNameHandler = (title: string) => onEditTaskName(todolistId, task.id, title);
 
     return (
-      <li className={task.isDone ? 'is-done' : ''} key={task.id}>
-        <Button name='del' onClick={removeTaskHandler} />
-        <input
-          type='checkbox'
-          checked={task.isDone}
-          onChange={onChangeStatusHandler}
-        />
-        <EditableSpan title={task.title} callback={onEditTaskNameHandler} />
-      </li>
+      // <Box className={task.isDone ? 'is-done' : ''} key={task.id}>
+      <Box key={task.id} display='flex' alignItems='center'>
+        <IconButton onClick={removeTaskHandler} color='error' size='small'>
+          <Delete />
+        </IconButton>
+        <Checkbox checked={task.isDone} onChange={onChangeStatusHandler} />
+        <Typography variant='body1' component='span'>
+          <EditableSpan title={task.title} callback={onEditTaskNameHandler} />
+        </Typography>
+      </Box>
     );
   });
 
   return (
-    <div className='todolist'>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <h3 style={{ marginRight: '10px' }}>
-          <EditableSpan title={title} callback={onEditTodolistTitleHandler} />
-        </h3>
-        <Button name='del' onClick={removeTodolistHandler} />
-      </div>
+    <Box>
+      <Paper elevation={3} style={{ padding: '24px' }}>
+        <Box display='flex' justifyContent='space-between' alignItems='center' mb={1}>
+          <Typography variant='h5' component='h2'>
+            <EditableSpan title={title} callback={onEditTodolistTitleHandler} />
+          </Typography>
+          <IconButton onClick={removeTodolistHandler} color='error' size='small'>
+            <Delete />
+          </IconButton>
+        </Box>
 
-      <AddItemForm onClick={addTaskCallback} />
-      <br />
+        <AddItemForm onClick={addTaskCallback} />
+        <br />
 
-      <div>
-        <Button
-          className={filter === 'all' ? 'active-btn' : ''}
-          name='All'
-          onClick={setAll}
-        />
-        <Button
-          className={filter === 'active' ? 'active-btn' : ''}
-          name='Active'
-          onClick={setActive}
-        />
-        <Button
-          className={filter === 'completed' ? 'active-btn' : ''}
-          name='Completed'
-          onClick={setCompleted}
-        />
-      </div>
+        <Box>
+          <Button
+            variant={filter === 'all' ? 'contained' : 'outlined'}
+            color='primary'
+            onClick={setAll}
+            size='small'
+            style={{ marginRight: '5px' }}
+          >
+            All
+          </Button>
+          <Button
+            variant={filter === 'active' ? 'contained' : 'outlined'}
+            color='secondary'
+            onClick={setActive}
+            size='small'
+            style={{ marginRight: '5px' }}
+          >
+            Active
+          </Button>
+          <Button
+            variant={filter === 'completed' ? 'contained' : 'outlined'}
+            color='success'
+            onClick={setCompleted}
+            size='small'
+            style={{ marginRight: '5px' }}
+          >
+            Completed
+          </Button>
+        </Box>
 
-      {tasks.length ? <ul>{tasksList}</ul> : <div>You have no tasks</div>}
-    </div>
+        {tasks.length ? (
+          <Box>{tasksList}</Box>
+        ) : (
+          <Typography variant='h6' component='div' mt={2}>
+            You have no tasks yet =(
+          </Typography>
+        )}
+      </Paper>
+    </Box>
   );
 };
