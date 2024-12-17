@@ -1,16 +1,11 @@
 import { useState } from 'react';
 import { TaskType, Todolist } from './Todolist';
 import { AddItemForm } from './components/AddItemForm';
-import Menu from '@mui/icons-material/Menu';
+import { ButtonAppBar } from './components/ButtonAppBar';
 import './App.css';
 import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -113,44 +108,38 @@ function App() {
 
   return (
     <Box>
-      <AppBar position='static'>
-        <Toolbar>
-          <IconButton size='large' edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }}>
-            <Menu />
-          </IconButton>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            Todolists App
-          </Typography>
-          <Button color='inherit'>Login</Button>
-        </Toolbar>
-      </AppBar>
+      <ButtonAppBar />
 
       <Container maxWidth='lg'>
-        <Paper>
+        <Box mt={2} mb={3}>
           <Typography variant='h5' component='h2'>
             Add new todolist
           </Typography>
           <AddItemForm onClick={addTodolist} />
-        </Paper>
+        </Box>
+      </Container>
 
-        {todolists.map(tl => {
-          return (
-            <Todolist
-              key={tl.id}
-              todolistId={tl.id}
-              title={tl.title}
-              tasks={allTasks[tl.id]}
-              addTask={addTask}
-              removeTask={removeTask}
-              onEditTaskName={onEditTaskName}
-              filter={tl.filter}
-              changeFilter={changeFilter}
-              onChangeStatus={onChangeStatus}
-              removeTodolist={removeTodolist}
-              onEditTodolistTitle={onEditTodolistTitle}
-            />
-          );
-        })}
+      <Container maxWidth='lg'>
+        <Box display='flex' flexWrap='wrap' gap={2}>
+          {todolists.map(tl => {
+            return (
+              <Todolist
+                key={tl.id}
+                todolistId={tl.id}
+                title={tl.title}
+                tasks={allTasks[tl.id]}
+                addTask={addTask}
+                removeTask={removeTask}
+                onEditTaskName={onEditTaskName}
+                filter={tl.filter}
+                changeFilter={changeFilter}
+                onChangeStatus={onChangeStatus}
+                removeTodolist={removeTodolist}
+                onEditTodolistTitle={onEditTodolistTitle}
+              />
+            );
+          })}
+        </Box>
       </Container>
     </Box>
   );

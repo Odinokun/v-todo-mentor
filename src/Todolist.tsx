@@ -3,7 +3,7 @@ import { FilterType } from './App';
 import { AddItemForm } from './components/AddItemForm';
 import { EditableSpan } from './components/EditableSpan';
 import Delete from '@mui/icons-material/Delete';
-import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material';
+import { Box, Button, Checkbox, IconButton, Paper, Typography } from '@mui/material';
 
 export type TaskType = {
   id: string;
@@ -83,50 +83,58 @@ export const Todolist: FC<PropsType> = ({
   });
 
   return (
-    <div className='todolist'>
-      <Box display='flex' justifyContent='space-between' alignItems='center'>
-        <Typography variant='h5' component='h2'>
-          <EditableSpan title={title} callback={onEditTodolistTitleHandler} />
-        </Typography>
-        <IconButton onClick={removeTodolistHandler} color='error' size='small'>
-          <Delete />
-        </IconButton>
-      </Box>
+    <Box>
+      <Paper elevation={3} style={{ padding: '24px' }}>
+        <Box display='flex' justifyContent='space-between' alignItems='center' mb={1}>
+          <Typography variant='h5' component='h2'>
+            <EditableSpan title={title} callback={onEditTodolistTitleHandler} />
+          </Typography>
+          <IconButton onClick={removeTodolistHandler} color='error' size='small'>
+            <Delete />
+          </IconButton>
+        </Box>
 
-      <AddItemForm onClick={addTaskCallback} />
-      <br />
+        <AddItemForm onClick={addTaskCallback} />
+        <br />
 
-      <div>
-        <Button
-          variant={filter === 'all' ? 'contained' : 'outlined'}
-          color='primary'
-          onClick={setAll}
-          size='small'
-          style={{ marginRight: '5px' }}
-        >
-          All
-        </Button>
-        <Button
-          variant={filter === 'active' ? 'contained' : 'outlined'}
-          color='secondary'
-          onClick={setActive}
-          size='small'
-          style={{ marginRight: '5px' }}
-        >
-          Active
-        </Button>
-        <Button
-          variant={filter === 'completed' ? 'contained' : 'outlined'}
-          color='success'
-          onClick={setCompleted}
-          size='small'
-          style={{ marginRight: '5px' }}
-        >
-          Completed
-        </Button>
-      </div>
+        <Box>
+          <Button
+            variant={filter === 'all' ? 'contained' : 'outlined'}
+            color='primary'
+            onClick={setAll}
+            size='small'
+            style={{ marginRight: '5px' }}
+          >
+            All
+          </Button>
+          <Button
+            variant={filter === 'active' ? 'contained' : 'outlined'}
+            color='secondary'
+            onClick={setActive}
+            size='small'
+            style={{ marginRight: '5px' }}
+          >
+            Active
+          </Button>
+          <Button
+            variant={filter === 'completed' ? 'contained' : 'outlined'}
+            color='success'
+            onClick={setCompleted}
+            size='small'
+            style={{ marginRight: '5px' }}
+          >
+            Completed
+          </Button>
+        </Box>
 
-      {tasks.length ? <Box>{tasksList}</Box> : <Box>You have no tasks</Box>}
-    </div>
+        {tasks.length ? (
+          <Box>{tasksList}</Box>
+        ) : (
+          <Typography variant='h6' component='div' mt={2}>
+            You have no tasks yet =(
+          </Typography>
+        )}
+      </Paper>
+    </Box>
   );
 };
