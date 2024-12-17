@@ -9,6 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -117,35 +120,42 @@ function App() {
             <Menu />
           </IconButton>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            News
+            Todolists App
           </Typography>
           <Button color='inherit'>Login</Button>
         </Toolbar>
       </AppBar>
+      <Container maxWidth='lg'>
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
+            <Paper>
+              <h3>Add new todolist</h3>
+              <AddItemForm onClick={addTodolist} />
+            </Paper>
+          </Grid>
 
-      <Box>
-        <h3>Add new todolist</h3>
-        <AddItemForm onClick={addTodolist} />
-      </Box>
-
-      {todolists.map(tl => {
-        return (
-          <Todolist
-            key={tl.id}
-            todolistId={tl.id}
-            title={tl.title}
-            tasks={allTasks[tl.id]}
-            addTask={addTask}
-            removeTask={removeTask}
-            onEditTaskName={onEditTaskName}
-            filter={tl.filter}
-            changeFilter={changeFilter}
-            onChangeStatus={onChangeStatus}
-            removeTodolist={removeTodolist}
-            onEditTodolistTitle={onEditTodolistTitle}
-          />
-        );
-      })}
+          {todolists.map(tl => {
+            return (
+              <Grid item xs={3}>
+                <Todolist
+                  key={tl.id}
+                  todolistId={tl.id}
+                  title={tl.title}
+                  tasks={allTasks[tl.id]}
+                  addTask={addTask}
+                  removeTask={removeTask}
+                  onEditTaskName={onEditTaskName}
+                  filter={tl.filter}
+                  changeFilter={changeFilter}
+                  onChangeStatus={onChangeStatus}
+                  removeTodolist={removeTodolist}
+                  onEditTodolistTitle={onEditTodolistTitle}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
     </Box>
   );
 }

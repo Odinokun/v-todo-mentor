@@ -1,5 +1,5 @@
+import Button from '@mui/material/Button';
 import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
-import { Button } from './Button';
 
 type PropsType = {
   onClick: (title: string) => void;
@@ -12,8 +12,7 @@ export const AddItemForm: FC<PropsType> = ({ onClick }) => {
     setInputValue(e.target.value);
     setError('');
   };
-  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) =>
-    e.key === 'Enter' && onClickHandler();
+  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && onClickHandler();
 
   const onClickHandler = () => {
     if (!inputValue.trim()) {
@@ -32,7 +31,7 @@ export const AddItemForm: FC<PropsType> = ({ onClick }) => {
         onKeyDown={onKeyPressHandler}
         className={error ? 'error-input' : ''}
       />
-      <Button name='add task' onClick={onClickHandler} />
+      <Button onClick={onClickHandler} name='add task' />
       {error && <div className='error'>{error}</div>}
     </div>
   );

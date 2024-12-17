@@ -1,8 +1,8 @@
 import { ChangeEvent, FC } from 'react';
 import { FilterType } from './App';
-import { Button } from './components/Button';
 import { AddItemForm } from './components/AddItemForm';
 import { EditableSpan } from './components/EditableSpan';
+import { Button } from '@mui/material';
 
 export type TaskType = {
   id: string;
@@ -69,7 +69,7 @@ export const Todolist: FC<PropsType> = ({
 
     return (
       <li className={task.isDone ? 'is-done' : ''} key={task.id}>
-        <Button name='del' onClick={removeTaskHandler} />
+        <Button onClick={removeTaskHandler}>del</Button>
         <input type='checkbox' checked={task.isDone} onChange={onChangeStatusHandler} />
         <EditableSpan title={task.title} callback={onEditTaskNameHandler} />
       </li>
@@ -82,16 +82,19 @@ export const Todolist: FC<PropsType> = ({
         <h3 style={{ marginRight: '10px' }}>
           <EditableSpan title={title} callback={onEditTodolistTitleHandler} />
         </h3>
-        <Button name='del' onClick={removeTodolistHandler} />
+        <Button onClick={removeTodolistHandler}>del</Button>
       </div>
 
       <AddItemForm onClick={addTaskCallback} />
       <br />
 
       <div>
-        <Button className={filter === 'all' ? 'active-btn' : ''} name='All' onClick={setAll} />
-        <Button className={filter === 'active' ? 'active-btn' : ''} name='Active' onClick={setActive} />
-        <Button className={filter === 'completed' ? 'active-btn' : ''} name='Completed' onClick={setCompleted} />
+        <Button onClick={setAll}>All</Button>
+        <Button onClick={setActive}>Active</Button>
+        <Button onClick={setCompleted}>Completed</Button>
+        {/* <Btn className={filter === 'all' ? 'active-btn' : ''} name='All' onClick={setAll} />
+        <Btn className={filter === 'active' ? 'active-btn' : ''} name='Active' onClick={setActive} />
+        <Btn className={filter === 'completed' ? 'active-btn' : ''} name='Completed' onClick={setCompleted} /> */}
       </div>
 
       {tasks.length ? <ul>{tasksList}</ul> : <div>You have no tasks</div>}
