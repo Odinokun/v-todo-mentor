@@ -69,8 +69,7 @@ export const Todolist: FC<PropsType> = ({
     const onEditTaskNameHandler = (title: string) => onEditTaskName(todolistId, task.id, title);
 
     return (
-      // <Box className={task.isDone ? 'is-done' : ''} key={task.id}>
-      <Box key={task.id} display='flex' alignItems='center'>
+      <Box key={task.id} display='flex' alignItems='center' style={task.isDone ? { opacity: 0.5 } : {}}>
         <IconButton onClick={removeTaskHandler} color='error' size='small'>
           <Delete />
         </IconButton>
