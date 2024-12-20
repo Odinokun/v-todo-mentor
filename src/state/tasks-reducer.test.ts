@@ -1,7 +1,14 @@
 import { expect, test } from 'vitest';
 import { AllTasksType } from '../App';
-import { addTaskAC, tasksReducer } from './tasks-reducer';
-import { TaskType } from '../Todolist';
+import {
+  addTaskAC,
+  AddTaskACType,
+  editTaskNameAC,
+  EditTaskNameACType,
+  removeTaskAC,
+  RemoveTaskACType,
+  tasksReducer,
+} from './tasks-reducer';
 
 const todolist_1 = crypto.randomUUID();
 const todolist_2 = crypto.randomUUID();
@@ -30,10 +37,26 @@ const initialState: AllTasksType = {
 
 test('New task must be add', () => {
   const newTitle = 'New task';
-  const action = addTaskAC(todolist_1, newTitle);
+  const action: AddTaskACType = addTaskAC(todolist_1, newTitle);
   const endState = tasksReducer(initialState, action);
 
   expect(endState[todolist_1].length).toBe(7);
   expect(endState[todolist_1][0].title).toEqual(newTitle);
   expect(endState[todolist_1][0].isDone).toEqual(false);
+});
+test('Target task must be remove', () => {
+  const taskId = initialState[todolist_1][0].id;
+  const action: RemoveTaskACType = removeTaskAC(todolist_1, taskId);
+  const endState = tasksReducer(initialState, action);
+
+  expect(endState[todolist_1].length).toBe(5);
+  expect(endState[todolist_1][0].title).toEqual(initialState[todolist_1][1].title);
+});
+test('Change task name', () => {
+  const taskId = initialState[todolist_1][0].id;
+  const newTitle = 'New title';
+  const action: EditTaskNameACType = editTaskNameAC(todolist_1, taskId, newTitle);
+  const endState = tasksReducer(initialState, action);
+
+  expect(endState[todolist_1][0].title).toEqual(newTitle);
 });

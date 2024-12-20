@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import './App.css';
-import { addTaskAC, tasksReducer } from './state/tasks-reducer';
+import { addTaskAC, editTaskNameAC, removeTaskAC, tasksReducer } from './state/tasks-reducer';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -66,18 +66,11 @@ function App() {
 
   const addTask = (todolistId: string, title: string) => dispatchTasks(addTaskAC(todolistId, title));
 
-  const removeTask = (todolistId: string, id: string) => {
-    // setAllTasks({
-    //   ...allTasks,
-    //   [todolistId]: allTasks[todolistId].filter(t => t.id !== id),
-    // });
-  };
-  const onEditTaskName = (todolistId: string, id: string, title: string) => {
-    // setAllTasks({
-    //   ...allTasks,
-    //   [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, title } : t)),
-    // });
-  };
+  const removeTask = (todolistId: string, id: string) => dispatchTasks(removeTaskAC(todolistId, id));
+
+  const editTaskName = (todolistId: string, id: string, title: string) =>
+    dispatchTasks(editTaskNameAC(todolistId, id, title));
+
   const onChangeStatus = (todolistId: string, id: string, taskStatus: boolean) => {
     // setAllTasks({
     //   ...allTasks,
@@ -119,7 +112,7 @@ function App() {
                 tasks={allTasks[tl.id]}
                 addTask={addTask}
                 removeTask={removeTask}
-                onEditTaskName={onEditTaskName}
+                onEditTaskName={editTaskName}
                 filter={tl.filter}
                 changeFilter={changeFilter}
                 onChangeStatus={onChangeStatus}
