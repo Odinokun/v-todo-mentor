@@ -1,5 +1,5 @@
 import { useReducer, useState } from 'react';
-import { changeFilterAC, editTodolistTitleAC, todolistsReducer } from './state/todolists-reducer';
+import { changeFilterAC, editTodolistTitleAC, removeTodolistAC, todolistsReducer } from './state/todolists-reducer';
 
 import { TaskType, Todolist } from './Todolist';
 import { AddItemForm } from './components/AddItemForm';
@@ -58,8 +58,8 @@ function App() {
     dispatchTodolists(editTodolistTitleAC(todolistId, title));
 
   const removeTodolist = (todolistId: string) => {
-    // setTodolists(todolists.filter(tl => tl.id !== todolistId));
-    // delete allTasks[todolistId];
+    dispatchTodolists(removeTodolistAC(todolistId));
+    delete allTasks[todolistId];
   };
 
   // **********************************************

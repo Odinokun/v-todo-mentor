@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { FilterType, TodolistType } from '../App';
-import { changeFilterAC, editTodolistTitleAC, todolistsReducer } from './todolists-reducer';
+import { changeFilterAC, editTodolistTitleAC, removeTodolistAC, todolistsReducer } from './todolists-reducer';
 
 const todolist_1 = crypto.randomUUID();
 const todolist_2 = crypto.randomUUID();
@@ -25,4 +25,11 @@ test('Target todolist title must be change', () => {
   const endState = todolistsReducer(initialState, action);
 
   expect(endState[0].title).toEqual(newTitle);
+});
+test('Target todolist must be removed', () => {
+  const action = removeTodolistAC(todolist_1);
+  const endState = todolistsReducer(initialState, action);
+
+  expect(endState.length).toBe(2);
+  expect(endState[0].id).toEqual(todolist_2);
 });
