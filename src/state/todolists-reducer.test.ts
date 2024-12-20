@@ -21,11 +21,11 @@ const initialState: TodolistType[] = [
 ];
 
 test('Filter must be change', () => {
-  const newFilterVal: FilterType = 'active';
-  const action: ChangeFilterACType = changeFilterAC(todolist_1, newFilterVal);
+  const newFilter: FilterType = 'active';
+  const action: ChangeFilterACType = changeFilterAC(todolist_1, newFilter);
   const endState = todolistsReducer(initialState, action);
 
-  expect(endState[0].filter).toEqual(newFilterVal);
+  expect(endState[0].filter).toEqual(newFilter);
 });
 test('Target todolist title must be change', () => {
   const newTitle = 'New todolist title';
