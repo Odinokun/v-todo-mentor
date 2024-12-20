@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import './App.css';
+import { addTaskAC, tasksReducer } from './state/tasks-reducer';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -18,7 +19,7 @@ export type TodolistType = {
   filter: FilterType;
 };
 
-type AllTasksType = {
+export type AllTasksType = {
   [key: string]: TaskType[];
 };
 
@@ -32,7 +33,7 @@ function App() {
     { id: todolist_2, title: 'Reading', filter: 'active' },
     { id: todolist_3, title: 'Watching', filter: 'completed' },
   ]);
-  const [allTasks, setAllTasks] = useState<AllTasksType>({
+  const [allTasks, dispatchTasks] = useReducer(tasksReducer, {
     [todolist_1]: [
       { id: crypto.randomUUID(), title: 'HTML&CSS', isDone: true },
       { id: crypto.randomUUID(), title: 'JS', isDone: true },
@@ -54,6 +55,7 @@ function App() {
   });
 
   const changeFilter = (todolistId: string, value: FilterType) => dispatchTodolists(changeFilterAC(todolistId, value));
+
   const editTodolistTitle = (todolistId: string, title: string) =>
     dispatchTodolists(editTodolistTitleAC(todolistId, title));
 
@@ -62,39 +64,26 @@ function App() {
     delete allTasks[todolistId];
   };
 
-  // **********************************************
-  // ********** #TODO CHANGE IT *******************
-  // **********************************************
+  const addTask = (todolistId: string, title: string) => dispatchTasks(addTaskAC(todolistId, title));
 
-  const addTask = (todolistId: string, title: string) => {
-    const newTask: TaskType = {
-      id: crypto.randomUUID(),
-      title,
-      isDone: false,
-    };
-    setAllTasks({
-      ...allTasks,
-      [todolistId]: [newTask, ...allTasks[todolistId]],
-    });
+  const removeTask = (todolistId: string, id: string) => {
+    // setAllTasks({
+    //   ...allTasks,
+    //   [todolistId]: allTasks[todolistId].filter(t => t.id !== id),
+    // });
   };
-  const removeTask = (todolistId: string, id: string) =>
-    setAllTasks({
-      ...allTasks,
-      [todolistId]: allTasks[todolistId].filter(t => t.id !== id),
-    });
   const onEditTaskName = (todolistId: string, id: string, title: string) => {
-    setAllTasks({
-      ...allTasks,
-      [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, title } : t)),
-    });
+    // setAllTasks({
+    //   ...allTasks,
+    //   [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, title } : t)),
+    // });
   };
   const onChangeStatus = (todolistId: string, id: string, taskStatus: boolean) => {
-    setAllTasks({
-      ...allTasks,
-      [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, isDone: taskStatus } : t)),
-    });
+    // setAllTasks({
+    //   ...allTasks,
+    //   [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, isDone: taskStatus } : t)),
+    // });
   };
-
   const addTodolist = (title: string) => {
     const newId = crypto.randomUUID();
     const newTodo: TodolistType = {
@@ -103,7 +92,7 @@ function App() {
       filter: 'all',
     };
     // setTodolists([newTodo, ...todolists]);
-    setAllTasks({ [newId]: [], ...allTasks });
+    // setAllTasks({ [newId]: [], ...allTasks });
   };
 
   return (
