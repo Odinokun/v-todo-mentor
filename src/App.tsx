@@ -1,5 +1,11 @@
 import { useReducer, useState } from 'react';
-import { changeFilterAC, editTodolistTitleAC, removeTodolistAC, todolistsReducer } from './state/todolists-reducer';
+import {
+  addTodolistAC,
+  changeFilterAC,
+  editTodolistTitleAC,
+  removeTodolistAC,
+  todolistsReducer,
+} from './state/todolists-reducer';
 
 import { TaskType, Todolist } from './Todolist';
 import { AddItemForm } from './components/AddItemForm';
@@ -9,7 +15,14 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import './App.css';
-import { addTaskAC, changeTaskStatusAC, editTaskNameAC, removeTaskAC, tasksReducer } from './state/tasks-reducer';
+import {
+  addTaskAC,
+  addTasksAC,
+  changeTaskStatusAC,
+  editTaskNameAC,
+  removeTaskAC,
+  tasksReducer,
+} from './state/tasks-reducer';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -76,13 +89,8 @@ function App() {
 
   const addTodolist = (title: string) => {
     const newId = crypto.randomUUID();
-    const newTodo: TodolistType = {
-      id: newId,
-      title,
-      filter: 'all',
-    };
-    // setTodolists([newTodo, ...todolists]);
-    // setAllTasks({ [newId]: [], ...allTasks });
+    dispatchTodolists(addTodolistAC(newId, title));
+    dispatchTasks(addTasksAC(newId));
   };
 
   return (

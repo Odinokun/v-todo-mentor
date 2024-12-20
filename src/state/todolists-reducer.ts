@@ -3,8 +3,9 @@ import { FilterType, TodolistType } from '../App';
 export type ChangeFilterACType = ReturnType<typeof changeFilterAC>;
 export type EditTodolistTitleACType = ReturnType<typeof editTodolistTitleAC>;
 export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>;
+export type AddTodolistACType = ReturnType<typeof addTodolistAC>;
 
-type ActionsType = ChangeFilterACType | EditTodolistTitleACType | RemoveTodolistACType;
+type ActionsType = ChangeFilterACType | EditTodolistTitleACType | RemoveTodolistACType | AddTodolistACType;
 
 export const todolistsReducer = (state: TodolistType[], action: ActionsType): TodolistType[] => {
   switch (action.type) {
@@ -19,6 +20,15 @@ export const todolistsReducer = (state: TodolistType[], action: ActionsType): To
     case 'REMOVE-TODOLIST': {
       const { id } = action.payload;
       return state.filter(tl => tl.id !== id);
+    }
+    case 'ADD-TODOLIST': {
+      const { id, title } = action.payload;
+      const newTodo: TodolistType = {
+        id,
+        title,
+        filter: 'all',
+      };
+      return [newTodo, ...state];
     }
     default:
       console.error("ERROR => todolistsReducer. I don't understand this action type");
@@ -47,8 +57,15 @@ export const editTodolistTitleAC = (id: string, title: string) => {
 export const removeTodolistAC = (id: string) => {
   return {
     type: 'REMOVE-TODOLIST',
+    payload: { id },
+  } as const;
+};
+export const addTodolistAC = (id: string, title: string) => {
+  return {
+    type: 'ADD-TODOLIST',
     payload: {
       id,
+      title,
     },
   } as const;
 };
