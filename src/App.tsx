@@ -120,7 +120,7 @@ function App() {
       </Container>
 
       <Container maxWidth='lg'>
-        <Box display='flex' flexWrap='wrap' gap={2}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2 }}>
           {todolists.map(tl => {
             return (
               <Todolist
