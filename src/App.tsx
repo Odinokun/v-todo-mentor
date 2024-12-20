@@ -85,10 +85,6 @@ function App() {
     // setAllTasks({ [newId]: [], ...allTasks });
   };
 
-  // ********************************
-  // #TODO to change function's name
-  // ********************************
-
   return (
     <Box>
       <ButtonAppBar />
@@ -113,12 +109,12 @@ function App() {
                 tasks={allTasks[tl.id]}
                 addTask={addTask}
                 removeTask={removeTask}
-                onEditTaskName={editTaskName}
+                editTaskName={editTaskName}
                 filter={tl.filter}
                 changeFilter={changeFilter}
-                onChangeStatus={changeTaskStatus}
+                changeTaskStatus={changeTaskStatus}
                 removeTodolist={removeTodolist}
-                onEditTodolistTitle={editTodolistTitle}
+                editTodolistTitle={editTodolistTitle}
               />
             );
           })}
