@@ -1,5 +1,5 @@
 import { useReducer, useState } from 'react';
-import { changeFilterAC, todolistsReducer } from './state/todolists-reducer';
+import { changeFilterAC, editTodolistTitleAC, todolistsReducer } from './state/todolists-reducer';
 
 import { TaskType, Todolist } from './Todolist';
 import { AddItemForm } from './components/AddItemForm';
@@ -54,15 +54,18 @@ function App() {
   });
 
   const changeFilter = (todolistId: string, value: FilterType) => dispatchTodolists(changeFilterAC(todolistId, value));
+  const editTodolistTitle = (todolistId: string, title: string) =>
+    dispatchTodolists(editTodolistTitleAC(todolistId, title));
+
+  const removeTodolist = (todolistId: string) => {
+    // setTodolists(todolists.filter(tl => tl.id !== todolistId));
+    // delete allTasks[todolistId];
+  };
 
   // **********************************************
   // ********** #TODO CHANGE IT *******************
   // **********************************************
 
-  const removeTodolist = (todolistId: string) => {
-    setTodolists(todolists.filter(tl => tl.id !== todolistId));
-    delete allTasks[todolistId];
-  };
   const addTask = (todolistId: string, title: string) => {
     const newTask: TaskType = {
       id: crypto.randomUUID(),
@@ -99,11 +102,8 @@ function App() {
       title,
       filter: 'all',
     };
-    setTodolists([newTodo, ...todolists]);
+    // setTodolists([newTodo, ...todolists]);
     setAllTasks({ [newId]: [], ...allTasks });
-  };
-  const onEditTodolistTitle = (todolistId: string, title: string) => {
-    setTodolists(todolists.map(tl => (tl.id === todolistId ? { ...tl, title } : tl)));
   };
 
   return (
@@ -135,7 +135,7 @@ function App() {
                 changeFilter={changeFilter}
                 onChangeStatus={onChangeStatus}
                 removeTodolist={removeTodolist}
-                onEditTodolistTitle={onEditTodolistTitle}
+                onEditTodolistTitle={editTodolistTitle}
               />
             );
           })}
