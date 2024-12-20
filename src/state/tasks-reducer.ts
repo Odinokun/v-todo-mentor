@@ -11,31 +11,25 @@ type ActionsType = AddTaskACType | RemoveTaskACType | EditTaskNameACType | Chang
 export const tasksReducer = (state: AllTasksType, action: ActionsType): AllTasksType => {
   switch (action.type) {
     case 'ADD-TASK': {
-      const p = { ...action.payload };
+      const { todolistId, title } = action.payload;
       const newTask: TaskType = {
         id: crypto.randomUUID(),
-        title: p.title,
+        title,
         isDone: false,
       };
-      return { ...state, [p.todolistId]: [newTask, ...state[p.todolistId]] };
+      return { ...state, [todolistId]: [newTask, ...state[todolistId]] };
     }
     case 'REMOVE-TASK': {
-      const p = { ...action.payload };
-      return { ...state, [p.todolistId]: state[p.todolistId].filter(t => t.id !== p.id) };
+      const { todolistId, id } = action.payload;
+      return { ...state, [todolistId]: state[todolistId].filter(t => t.id !== id) };
     }
     case 'EDIT-TASK-NAME': {
-      const p = { ...action.payload };
-      return {
-        ...state,
-        [p.todolistId]: state[p.todolistId].map(t => (t.id === p.id ? { ...t, title: p.title } : t)),
-      };
+      const { todolistId, id, title } = action.payload;
+      return { ...state, [todolistId]: state[todolistId].map(t => (t.id === id ? { ...t, title } : t)) };
     }
     case 'CHANGE-TASK-STATUS': {
-      const p = { ...action.payload };
-      return {
-        ...state,
-        [p.todolistId]: state[p.todolistId].map(t => (t.id === p.id ? { ...t, isDone: p.taskStatus } : t)),
-      };
+      const { todolistId, id, taskStatus } = action.payload;
+      return { ...state, [todolistId]: state[todolistId].map(t => (t.id === id ? { ...t, isDone: taskStatus } : t)) };
     }
     default:
       console.log('I don`t understand this type');

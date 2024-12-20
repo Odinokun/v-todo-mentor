@@ -9,16 +9,16 @@ type ActionsType = ChangeFilterACType | EditTodolistTitleACType | RemoveTodolist
 export const todolistsReducer = (state: TodolistType[], action: ActionsType): TodolistType[] => {
   switch (action.type) {
     case 'CHANGE-FILTER': {
-      const p = { ...action.payload };
-      return state.map(tl => (tl.id === p.id ? { ...tl, filter: p.filter } : tl));
+      const { id, filter } = action.payload;
+      return state.map(tl => (tl.id === id ? { ...tl, filter } : tl));
     }
     case 'EDIT-TODOLIST-TITLE': {
-      const p = { ...action.payload };
-      return state.map(tl => (tl.id === p.id ? { ...tl, title: p.title } : tl));
+      const { id, title } = action.payload;
+      return state.map(tl => (tl.id === id ? { ...tl, title } : tl));
     }
     case 'REMOVE-TODOLIST': {
-      const p = { ...action.payload };
-      return state.filter(tl => tl.id !== p.id);
+      const { id } = action.payload;
+      return state.filter(tl => tl.id !== id);
     }
     default:
       console.error("ERROR => todolistsReducer. I don't understand this action type");
