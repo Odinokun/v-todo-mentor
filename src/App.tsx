@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import './App.css';
-import { addTaskAC, editTaskNameAC, removeTaskAC, tasksReducer } from './state/tasks-reducer';
+import { addTaskAC, changeTaskStatusAC, editTaskNameAC, removeTaskAC, tasksReducer } from './state/tasks-reducer';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -71,12 +71,9 @@ function App() {
   const editTaskName = (todolistId: string, id: string, title: string) =>
     dispatchTasks(editTaskNameAC(todolistId, id, title));
 
-  const onChangeStatus = (todolistId: string, id: string, taskStatus: boolean) => {
-    // setAllTasks({
-    //   ...allTasks,
-    //   [todolistId]: allTasks[todolistId].map(t => (t.id === id ? { ...t, isDone: taskStatus } : t)),
-    // });
-  };
+  const changeTaskStatus = (todolistId: string, id: string, taskStatus: boolean) =>
+    dispatchTasks(changeTaskStatusAC(todolistId, id, taskStatus));
+
   const addTodolist = (title: string) => {
     const newId = crypto.randomUUID();
     const newTodo: TodolistType = {
@@ -87,6 +84,10 @@ function App() {
     // setTodolists([newTodo, ...todolists]);
     // setAllTasks({ [newId]: [], ...allTasks });
   };
+
+  // ********************************
+  // #TODO to change function's name
+  // ********************************
 
   return (
     <Box>
@@ -115,7 +116,7 @@ function App() {
                 onEditTaskName={editTaskName}
                 filter={tl.filter}
                 changeFilter={changeFilter}
-                onChangeStatus={onChangeStatus}
+                onChangeStatus={changeTaskStatus}
                 removeTodolist={removeTodolist}
                 onEditTodolistTitle={editTodolistTitle}
               />

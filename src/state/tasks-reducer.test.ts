@@ -3,6 +3,8 @@ import { AllTasksType } from '../App';
 import {
   addTaskAC,
   AddTaskACType,
+  changeTaskStatusAC,
+  ChangeTaskStatusACType,
   editTaskNameAC,
   EditTaskNameACType,
   removeTaskAC,
@@ -59,4 +61,11 @@ test('Change task name', () => {
   const endState = tasksReducer(initialState, action);
 
   expect(endState[todolist_1][0].title).toEqual(newTitle);
+});
+test('Task status must be change', () => {
+  const taskId = initialState[todolist_1][0].id;
+  const action: ChangeTaskStatusACType = changeTaskStatusAC(todolist_1, taskId, false);
+  const endState = tasksReducer(initialState, action);
+
+  expect(endState[todolist_1][0].isDone).toBe(false);
 });
