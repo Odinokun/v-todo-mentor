@@ -17,12 +17,12 @@ type PropsType = {
   tasks: TaskType[];
   addTask: (todolistId: string, title: string) => void;
   removeTask: (todolistId: string, id: string) => void;
-  onEditTaskName: (todolistId: string, id: string, title: string) => void;
+  editTaskName: (todolistId: string, id: string, title: string) => void;
   filter: FilterType;
   changeFilter: (todolistId: string, filter: FilterType) => void;
-  onChangeStatus: (todolistId: string, id: string, taskStatus: boolean) => void;
+  changeTaskStatus: (todolistId: string, id: string, taskStatus: boolean) => void;
   removeTodolist: (todolistId: string) => void;
-  onEditTodolistTitle: (todolistId: string, title: string) => void;
+  editTodolistTitle: (todolistId: string, title: string) => void;
 };
 
 export const Todolist: FC<PropsType> = ({
@@ -31,12 +31,12 @@ export const Todolist: FC<PropsType> = ({
   tasks,
   addTask,
   removeTask,
-  onEditTaskName,
+  editTaskName,
   filter,
   changeFilter,
-  onChangeStatus,
+  changeTaskStatus,
   removeTodolist,
-  onEditTodolistTitle,
+  editTodolistTitle,
 }) => {
   const tasksFilter = (state: TaskType[]): TaskType[] => {
     switch (filter) {
@@ -58,25 +58,24 @@ export const Todolist: FC<PropsType> = ({
 
   const addTaskCallback = (title: string) => addTask(todolistId, title);
 
-  const onEditTodolistTitleHandler = (title: string) => onEditTodolistTitle(todolistId, title);
+  const editTodolistTitleHandler = (title: string) => editTodolistTitle(todolistId, title);
 
   const tasksList: JSX.Element[] = filteredTasks.map(task => {
     const removeTaskHandler = () => removeTask(todolistId, task.id);
 
-    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) =>
-      onChangeStatus(todolistId, task.id, e.currentTarget.checked);
+    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) =>
+      changeTaskStatus(todolistId, task.id, e.currentTarget.checked);
 
-    const onEditTaskNameHandler = (title: string) => onEditTaskName(todolistId, task.id, title);
+    const editTaskNameHandler = (title: string) => editTaskName(todolistId, task.id, title);
 
     return (
-      // <Box className={task.isDone ? 'is-done' : ''} key={task.id}>
-      <Box key={task.id} display='flex' alignItems='center'>
+      <Box key={task.id} display='flex' alignItems='center' style={task.isDone ? { opacity: 0.5 } : {}}>
         <IconButton onClick={removeTaskHandler} color='error' size='small'>
           <Delete />
         </IconButton>
-        <Checkbox checked={task.isDone} onChange={onChangeStatusHandler} />
+        <Checkbox checked={task.isDone} onChange={changeTaskStatusHandler} />
         <Typography variant='body1' component='span'>
-          <EditableSpan title={task.title} callback={onEditTaskNameHandler} />
+          <EditableSpan title={task.title} callback={editTaskNameHandler} />
         </Typography>
       </Box>
     );
@@ -87,7 +86,7 @@ export const Todolist: FC<PropsType> = ({
       <Paper elevation={3} style={{ padding: '24px' }}>
         <Box display='flex' justifyContent='space-between' alignItems='center' mb={1}>
           <Typography variant='h5' component='h2'>
-            <EditableSpan title={title} callback={onEditTodolistTitleHandler} />
+            <EditableSpan title={title} callback={editTodolistTitleHandler} />
           </Typography>
           <IconButton onClick={removeTodolistHandler} color='error' size='small'>
             <Delete />
