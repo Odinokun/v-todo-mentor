@@ -12,43 +12,45 @@ import {
   todolistsReducer,
 } from './todolists-reducer';
 
-const todolist_1 = crypto.randomUUID();
-const todolist_2 = crypto.randomUUID();
-const todolist_3 = crypto.randomUUID();
-
 const initialState: TodolistType[] = [
-  { id: todolist_1, title: 'Learning', filter: 'all' },
-  { id: todolist_2, title: 'Reading', filter: 'active' },
-  { id: todolist_3, title: 'Watching', filter: 'completed' },
+  { id: '1', title: 'Apple', filter: 'all' },
+  { id: '2', title: 'Linux', filter: 'completed' },
 ];
 
 test('Filter must be changed', () => {
   const newFilter: FilterType = 'active';
-  const action: ChangeFilterACType = changeFilterAC(todolist_1, newFilter);
+
+  const action: ChangeFilterACType = changeFilterAC('1', newFilter);
   const endState = todolistsReducer(initialState, action);
 
-  expect(endState[0].filter).toEqual(newFilter);
+  expect(endState[0].filter).toBe(newFilter);
+  expect(endState[1].filter).toBe('completed');
 });
+
 test('Target todolist title must be changed', () => {
-  const newTitle = 'New todolist title';
-  const action: EditTodolistTitleACType = editTodolistTitleAC(todolist_1, newTitle);
+  const newTitle = 'Windows';
+
+  const action: EditTodolistTitleACType = editTodolistTitleAC('1', newTitle);
   const endState = todolistsReducer(initialState, action);
 
-  expect(endState[0].title).toEqual(newTitle);
+  expect(endState[0].title).toBe(newTitle);
+  expect(endState[1].title).toBe('Linux');
 });
+
 test('Target todolist must be removed', () => {
-  const action: RemoveTodolistACType = removeTodolistAC(todolist_1);
+  const action: RemoveTodolistACType = removeTodolistAC('1');
   const endState = todolistsReducer(initialState, action);
 
-  expect(endState.length).toBe(2);
-  expect(endState[0].id).toEqual(todolist_2);
+  expect(endState.length).toBe(1);
+  expect(endState.every(tl => tl.id === '1')).toBeFalsy();
 });
+
 test('New todolist must be added', () => {
-  const id = crypto.randomUUID();
-  const newTitle = 'New todolist title';
-  const action: AddTodolistACType = addTodolistAC(id, newTitle);
+  const newTitle = 'Windows';
+
+  const action: AddTodolistACType = addTodolistAC('3', newTitle);
   const endState = todolistsReducer(initialState, action);
 
-  expect(endState.length).toBe(4);
-  expect(endState[0].title).toEqual(newTitle);
+  expect(endState.length).toBe(3);
+  expect(endState[0].title).toBe(newTitle);
 });
