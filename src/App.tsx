@@ -84,7 +84,7 @@ function App() {
   // FIX addTodolist isn't working
   const addTodolist = (title: string) => {
     dispatchTodolists(addTodolistAC(title));
-    // dispatchTasks(addTasksAC(newId));
+    // dispatchTasks(addTodolistAC(title));
   };
 
   return (
