@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react';
+import { useReducer } from 'react';
 import {
   addTodolistAC,
   changeFilterAC,
@@ -15,14 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import './App.css';
-import {
-  addTaskAC,
-  addTasksAC,
-  changeTaskStatusAC,
-  editTaskNameAC,
-  removeTaskAC,
-  tasksReducer,
-} from './state/tasks-reducer';
+import { addTaskAC, changeTaskStatusAC, editTaskNameAC, removeTaskAC, tasksReducer } from './state/tasks-reducer';
 
 export type FilterType = 'all' | 'active' | 'completed';
 

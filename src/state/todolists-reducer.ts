@@ -22,13 +22,8 @@ export const todolistsReducer = (state: TodolistType[], action: ActionsType): To
       return state.filter(tl => tl.id !== id);
     }
     case 'ADD-TODOLIST': {
-      // const { title } = action.payload;
-      // const newTodo: TodolistType = {
-      //   title,
-      //   filter: 'all',
-      // };
-      // return [newTodo, ...state];
-      return state;
+      const { id, title } = action.payload;
+      return [{ id, title, filter: 'all' }, ...state];
     }
     default:
       console.error("ERROR => todolistsReducer. I don't understand this action type");
@@ -57,6 +52,6 @@ export const removeTodolistAC = (id: string) => {
 export const addTodolistAC = (title: string) => {
   return {
     type: 'ADD-TODOLIST',
-    payload: { title },
+    payload: { id: crypto.randomUUID(), title },
   } as const;
 };
