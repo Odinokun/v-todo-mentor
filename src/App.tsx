@@ -72,9 +72,10 @@ function App() {
   const editTodolistTitle = (todolistId: string, title: string) =>
     dispatchTodolists(editTodolistTitleAC(todolistId, title));
 
+  // FIX removeTodolist isn't working
   const removeTodolist = (todolistId: string) => {
     dispatchTodolists(removeTodolistAC(todolistId));
-    delete allTasks[todolistId];
+    // delete allTasks[todolistId];
   };
 
   const addTask = (todolistId: string, title: string) => dispatchTasks(addTaskAC(todolistId, title));
@@ -87,10 +88,10 @@ function App() {
   const changeTaskStatus = (todolistId: string, id: string, taskStatus: boolean) =>
     dispatchTasks(changeTaskStatusAC(todolistId, id, taskStatus));
 
+  // FIX addTodolist isn't working
   const addTodolist = (title: string) => {
-    const newId = crypto.randomUUID();
-    dispatchTodolists(addTodolistAC(newId, title));
-    dispatchTasks(addTasksAC(newId));
+    dispatchTodolists(addTodolistAC(title));
+    // dispatchTasks(addTasksAC(newId));
   };
 
   return (
