@@ -1,10 +1,9 @@
-import { expect, test } from 'vitest';
+import { addTodolistAC, AddTodolistACType, removeTodolistAC, RemoveTodolistACType } from './todolists-reducer';
+import { beforeEach, expect, test } from 'vitest';
 import { AllTasksType } from '../App';
 import {
   addTaskAC,
   AddTaskACType,
-  addTasksAC,
-  AddTasksACType,
   changeTaskStatusAC,
   ChangeTaskStatusACType,
   editTaskNameAC,
@@ -16,65 +15,75 @@ import {
 
 const todolist_1 = crypto.randomUUID();
 const todolist_2 = crypto.randomUUID();
-const todolist_3 = crypto.randomUUID();
-
-const initialState: AllTasksType = {
+const state: AllTasksType = {
   [todolist_1]: [
-    { id: crypto.randomUUID(), title: 'HTML&CSS', isDone: true },
-    { id: crypto.randomUUID(), title: 'JS', isDone: true },
-    { id: crypto.randomUUID(), title: 'React', isDone: false },
-    { id: crypto.randomUUID(), title: 'GraphQL', isDone: false },
-    { id: crypto.randomUUID(), title: 'Rest API', isDone: false },
-    { id: crypto.randomUUID(), title: 'Graph API', isDone: false },
+    { id: '1', title: 'Apple', isDone: true },
+    { id: '2', title: 'Linux', isDone: false },
   ],
   [todolist_2]: [
-    { id: crypto.randomUUID(), title: 'Harry Potter', isDone: false },
-    { id: crypto.randomUUID(), title: 'Sherlock Holmes', isDone: false },
-    { id: crypto.randomUUID(), title: 'The Lord of the Rings', isDone: true },
-  ],
-  [todolist_3]: [
-    { id: crypto.randomUUID(), title: 'The Godfather', isDone: true },
-    { id: crypto.randomUUID(), title: 'Mr. Robot', isDone: true },
-    { id: crypto.randomUUID(), title: 'The Dark Knight', isDone: true },
+    { id: '1', title: 'Audi', isDone: true },
+    { id: '2', title: 'BMW', isDone: false },
   ],
 };
+let initialState: AllTasksType;
+beforeEach(() => {
+  initialState = state;
+});
 
 test('New task must be add', () => {
-  const newTitle = 'New task';
-  const action: AddTaskACType = addTaskAC(todolist_1, newTitle);
+  const action: AddTaskACType = addTaskAC(todolist_1, 'Windows');
   const endState = tasksReducer(initialState, action);
 
-  expect(endState[todolist_1].length).toBe(7);
-  expect(endState[todolist_1][0].title).toEqual(newTitle);
-  expect(endState[todolist_1][0].isDone).toEqual(false);
+  expect(endState[todolist_1].length).toBe(3);
+  expect(endState[todolist_1][0].title).toBe('Windows');
+  expect(endState[todolist_1][0].isDone).toBeFalsy();
 });
+
 test('Target task must be remove', () => {
-  const taskId = initialState[todolist_1][0].id;
-  const action: RemoveTaskACType = removeTaskAC(todolist_1, taskId);
+  const action: RemoveTaskACType = removeTaskAC(todolist_1, '1');
   const endState = tasksReducer(initialState, action);
 
-  expect(endState[todolist_1].length).toBe(5);
-  expect(endState[todolist_1][0].title).toEqual(initialState[todolist_1][1].title);
+  expect(endState[todolist_1].length).toBe(1);
+  expect(endState[todolist_1][0].title).toBe('Linux');
+  expect(endState[todolist_2][0].title).toBe('Audi');
 });
+
 test('Change task name', () => {
-  const taskId = initialState[todolist_1][0].id;
-  const newTitle = 'New title';
-  const action: EditTaskNameACType = editTaskNameAC(todolist_1, taskId, newTitle);
+  const action: EditTaskNameACType = editTaskNameAC(todolist_1, '1', 'Windows');
   const endState = tasksReducer(initialState, action);
 
-  expect(endState[todolist_1][0].title).toEqual(newTitle);
+  expect(endState[todolist_1][0].title).toBe('Windows');
+  expect(endState[todolist_2][0].title).toBe('Audi');
 });
+
 test('Task status must be change', () => {
-  const taskId = initialState[todolist_1][0].id;
-  const action: ChangeTaskStatusACType = changeTaskStatusAC(todolist_1, taskId, false);
+  const action: ChangeTaskStatusACType = changeTaskStatusAC(todolist_1, '1', false);
   const endState = tasksReducer(initialState, action);
 
-  expect(endState[todolist_1][0].isDone).toBe(false);
+  expect(endState[todolist_1][0].isDone).toBeFalsy();
+  expect(endState[todolist_2][0].isDone).toBeTruthy();
 });
-test('New tasks list must be added', () => {
-  const newId = crypto.randomUUID();
-  const action: AddTasksACType = addTasksAC(newId);
-  const endState = tasksReducer(initialState, action);
 
-  expect(endState[newId].length).toBe(0);
+test('New object key and tasks array must be added when we added new todolist', () => {
+  const action: AddTodolistACType = addTodolistAC('Title does`t matter');
+  const endState: AllTasksType = tasksReducer(initialState, action);
+
+  const keys = Object.keys(endState);
+  const newKey = keys.find(k => k !== todolist_1 && k !== todolist_2);
+  if (!newKey) {
+    throw Error('New key must be added!');
+  }
+
+  expect(keys.length).toBe(3);
+  expect(endState[newKey]).toEqual([]);
+});
+
+test('Key and task`s array must be deleted when we deleting todolist', () => {
+  const action: RemoveTodolistACType = removeTodolistAC(todolist_1);
+  const endState: AllTasksType = tasksReducer(initialState, action);
+
+  const keys = Object.keys(endState);
+
+  expect(keys.length).toBe(1);
+  expect(endState[todolist_1]).toBeUndefined();
 });

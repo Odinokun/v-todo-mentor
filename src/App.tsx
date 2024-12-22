@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react';
+import { useReducer } from 'react';
 import {
   addTodolistAC,
   changeFilterAC,
@@ -15,14 +15,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import './App.css';
-import {
-  addTaskAC,
-  addTasksAC,
-  changeTaskStatusAC,
-  editTaskNameAC,
-  removeTaskAC,
-  tasksReducer,
-} from './state/tasks-reducer';
+import { addTaskAC, changeTaskStatusAC, editTaskNameAC, removeTaskAC, tasksReducer } from './state/tasks-reducer';
 
 export type FilterType = 'all' | 'active' | 'completed';
 
@@ -72,9 +65,10 @@ function App() {
   const editTodolistTitle = (todolistId: string, title: string) =>
     dispatchTodolists(editTodolistTitleAC(todolistId, title));
 
+  // FIX removeTodolist isn't working
   const removeTodolist = (todolistId: string) => {
     dispatchTodolists(removeTodolistAC(todolistId));
-    delete allTasks[todolistId];
+    // delete allTasks[todolistId];
   };
 
   const addTask = (todolistId: string, title: string) => dispatchTasks(addTaskAC(todolistId, title));
@@ -87,10 +81,10 @@ function App() {
   const changeTaskStatus = (todolistId: string, id: string, taskStatus: boolean) =>
     dispatchTasks(changeTaskStatusAC(todolistId, id, taskStatus));
 
+  // FIX addTodolist isn't working
   const addTodolist = (title: string) => {
-    const newId = crypto.randomUUID();
-    dispatchTodolists(addTodolistAC(newId, title));
-    dispatchTasks(addTasksAC(newId));
+    dispatchTodolists(addTodolistAC(title));
+    // dispatchTasks(addTodolistAC(title));
   };
 
   return (
