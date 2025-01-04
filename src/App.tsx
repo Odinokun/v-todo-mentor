@@ -65,10 +65,10 @@ function App() {
 	const editTodolistTitle = (todolistId: string, title: string) =>
 		dispatchTodolists(editTodolistTitleAC(todolistId, title));
 
-	// FIX removeTodolist isn't working
 	const removeTodolist = (todolistId: string) => {
 		dispatchTodolists(removeTodolistAC(todolistId));
-		// delete allTasks[todolistId];
+		dispatchTasks(removeTodolistAC(todolistId));
+		console.log(allTasks);
 	};
 
 	const addTask = (todolistId: string, title: string) => dispatchTasks(addTaskAC(todolistId, title));
